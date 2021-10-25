@@ -4,7 +4,7 @@ Una empresa de tarjetas de crédito ha monitorizado los movimientos realizados p
 
 Esta empresa os pide:
 
-editado por cris
+editado por cris y sonia
 
 * Realizar un análisis exploratorio de los datos detallando aquellos aspectos más relevantes que hayáis encontrado.
 * Montar un modelo de clustering para segmentar los clientes en función de su comportamiento de compras.
