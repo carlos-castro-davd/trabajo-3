@@ -4,8 +4,6 @@ Una empresa de tarjetas de crédito ha monitorizado los movimientos realizados p
 
 Esta empresa os pide:
 
-editado por cris y sonia
-
 * Realizar un análisis exploratorio de los datos detallando aquellos aspectos más relevantes que hayáis encontrado.
 * Montar un modelo de clustering para segmentar los clientes en función de su comportamiento de compras.
 * Desarrollar un cuadro de mando con dash donde podamos observar los aspectos más relevantes que hayáis obtenido en el descriptivo y pueda agrupar nuevos clientes en un cluster determinado.
