@@ -1,158 +1,222 @@
-# Importamos las librerias mínimas necesarias
+#TRABAJO 3
+#SONIA GARCÍA LORENZANA Y CRISTINA ACÍN
+
+#Importamos las librerias mínimas necesarias
 import numpy as np
 import plotly.graph_objects as go
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import pandas as pd
 
-# A la hora de desarrollar una aplicación para visualizar datos tendremos que combinar 
-# elementos de HTML y CSS con elementos propios de Dash. Lo primero que tendremos que 
-# hacer siempre es inicializar una aplicación de Dash
-
+#Inicializamos la aplicación
 app = dash.Dash()
 
-# Una vez hemos inicializado la aplicacion, modificamos el diseño de la aplicacion
+#Una vez la hemos inicializado, modificamos el diseño de la aplicación, 
+#incorporando nuestro análisis exploratorio y modelos de Clustering
 
-# IMPORTANTE: Hay que ser extremadamente ordenado con el código para que se entienda
-# correctamente que se está haciendo en cada parte. Se recomienda un vistazo a la 
-# libreria Black para formateo del código.
+#Seleccionamos nuestro fichero de datos
+df = pd.read_csv("../../Trabajo 3 Info/trabajo3.csv")
 
-# Primer dashboard 
-app.layout = html.Div(  # Creamos una componente que realice la primera división del dashboard
+#Creamos el primer layout, el cual va a incorporar todo el dashboard
+app.layout = html.Div(  #Primer Div que contendrá toda la página
     children = [
-        html.H1( # Primera fila
-            children = [
-                "Introducción a Dash"
-            ],
-            id = "titulo",
-            style = {  # Aquí aplico todo lo que necesite de CSS
-                "text-align": "center", # Alineo el texto al centro
-                "color": "lightsteelblue", # Cambio el color de la fuente, se puede usar codigo hexagesimal
-                "font-family": "Arial", # Cambio el tipo de fuente
-                "backgroundColor": "darkslategray", # Cambio el color del fondo
-                "text-decoration": "underline" # Subrayar el texto
-            }
-        ),
-        html.Div( # Segunda fila 
-            children = [
-                html.H2(
-                    children = [
-                        "Esto es un subtítulo H2 "
-                    ],
-                    id = "primer_subtitulo",
-                    style = {
-                        "text-align": "left",
-                        "color": "lightsteelblue",
-                        "backgroundColor": "darkslategray",
-                        "width": "250px", # Pongo una anchura máxima para limitar este componente
-                        "display": "inline-block"
 
+        html.H1( #Título
+            children = [
+                "TRABAJO 3: SEGMENTACIÓN DE CLIENTES"
+            ],
+        id = "titulo",
+        style = {
+            "text-align": "center",
+            "backgroundColor": "lightgrey",
+            "padding-top":"10px",
+            "margin-bottom": "20px",
+            "margin-left": "15px",
+            "margin-right": "15px",
+            "border-style": "outset",
+            "border-color": "ligthgrey",
+            "border-width":"5px",
+            "height": "50px",
+            "font-family": "monospace",
+            "font-size":"35px"
+        }
+        ),
+
+        html.P( #Descripción general del proyecto 
+            children = [
+                        "Una empresa de tarjetas de crédito ha monitorizado los movimientos realizados por algunos de sus clientes durante los últimos 6 meses. " 
+                        "Esta información la ha resumido y la ha agregado a un fichero de datos con el fin de encontrar patrones en dichos clientes. "
+                        "La empresa nos pide realizar un análisis exploratorio de los datos, además de montar un modelo de clustering para segmentar "
+                        "a los clientes en función de sus diferentes comportamientos. Todos los aspectos más relevantes se detallan a continuación: "
+                    ],
+                    id = "primer_párrafo",
+                    style = {
+                        "display": "block",
+                        "margin-left": "150px",
+                        "margin-right": "150px",
+                        "text-align": "center",
+                        "text-align": "justify",
+                        "font-weight": "bold",
+                        "line-height": "150%",
+                        "font-family": "monospace",
+                        "font-size":"14px"
                     }
                 ),
-                html.P(
-                    children = [
-                        "Esto es un párrafo escrito a continuación en la misma linea que el título anterior"
-                    ],
-                    id = "componentes_css",
-                    style = {
-                        "font-family": "Arial",
-                        "display": "inline-block",
-                        "width": "600px",
-                        "margin-left": "100px" # Modificar el margen, comentar diferencias entre padding-border-margin
-                    }
-                )
-            ],
-            id = "segunda_fila"
-        ),
-        html.Div(
+
+        html.Div( #Primeros dos gráficos, distribución de la variable BALANCE. CON OUTLIERS
             children = [
-                dcc.Graph(
+                dcc.Graph(  #Histograma de la variable BALANCE
                     figure = go.Figure(
                         data = [
-                            go.Bar(
-                                x = ["Clase 1", "Clase 2", "Clase 3"],
-                                y = [10,6,13],
-                                marker_color = ["gold","darkorange","firebrick"],
+                            go.Histogram(
+                                x = df["BALANCE"],
+                                marker_color = "steelblue",
+                                name = "Balance",
                             )
                         ],
                         layout = go.Layout(
-                            title = "Primer gráfico de prueba",
-                            xaxis_title = "Clases",
-                            yaxis_title = "Elementos",
-                            width = 600,
-                            height = 600
-                        )
-                    ),
-                    id = "primera_figura",
-                    style = {
-                        "display": "block", # Diferenciar entre block, inline-block , inline
-                        "margin-left": "25%",
-                        "margin-right": "30%", # margin : auto
-                    }
-                )
-            ],
-            id = "tercera_fila"
-        ),
-        html.Div( # Cuarta fila
-            children = [
-                dcc.Graph(
-                    figure = go.Figure(
-                        data = [
-                            go.Histogram(
-                                x = np.random.normal(size = 1000),
-                                marker_color = "steelblue",
-                                name = "Histograma",
-                                histnorm = "probability"
-                            ),
-                        ],
-                        layout = go.Layout(
-                            title = "Histograma de valores",
-                            xaxis_title = "Valores de una normal de media 0 y std 1",
+                            title = "Histograma: Variable Balance",
+                            xaxis_title = "Balance (saldo en la cuenta)",
+                            yaxis_title = "Número de clientes",
                             width = 600,
                             height = 600,
-                            bargap = 0.1
+                            bargap = 0.2
                         )
                     ),
-                    id = "segunda_figura",
                     style = {
                         "display": "inline-block",
+                        "margin-left" : "5%", 
+                        "margin-right" : "3%"
                     }
                 ),
 
-                dcc.Graph(
+                dcc.Graph(  #Diagrama de cajas de la variable BALANCE
                     figure = go.Figure(
                         data = [
-                            go.Histogram(
-                                x = np.random.gamma(shape = 1/2, scale = 1/2, size = 1000),
-                                marker_color = "indigo",
-                                name = "Histograma",
-                                histnorm = "probability"
+                            go.Box(
+                                x = df["BALANCE"],
+                                marker_color = "steelblue",
+                                boxpoints="all"
                             ),
                         ],
                         layout = go.Layout(
-                            title = "Histograma de valores",
-                            xaxis_title = "Valores de una gamma",
+                            title = "Diagrama de cajas: Variable Balance",
+                            xaxis_title = "Balance (saldo en la cuenta)",
                             width = 600,
                             height = 600,
-                            bargap = 0.1
                         )
                     ),
-                    id = "tercera_figura",
                     style = {
                         "display": "inline-block"
                     }
                 ),
             ],
-            id = "cuarta_fila",
-        )
+        ),
+        
+        html.P( #Explicación de los outliers 
+            children = [
+                        "Los dos gráficos siguientes muestran la distribución de los datos una vez ya hemos identificado el primer cluster (procedente de los outliers). "
+                    ],
+                    id = "explicación_outliers",
+                    style = {
+                        "display": "block",
+                        "margin-left": "150px",
+                        "margin-right": "150px",
+                        "text-align": "center",
+                        "text-align": "justify",
+                        "line-height": "150%",
+                        "font-family": "monospace",
+                        "font-weight": "bold",
+                        "font-size":"14px"
+                    }
+                ),
+
+        html.Div( #Segundos dos gráficos, distribución de la variable BALANCE. SIN OUTLIERS
+            children = [
+                dcc.Graph(  #Histograma de la variable BALANCE SIN OUTLIERS
+                    figure = go.Figure(
+                        data = [
+                            go.Histogram(
+                                x = df["BALANCE"],
+                                marker_color = "green",
+                                name = "Balance",
+                            )
+                        ],
+                        layout = go.Layout(
+                            title = "Histograma: Variable Balance SIN OUTLIERS",
+                            xaxis_title = "Balance (saldo en la cuenta)",
+                            yaxis_title = "Número de clientes",
+                            width = 600,
+                            height = 600,
+                            bargap = 0.2
+                        )
+                    ),
+                    style = {
+                        "display": "inline-block",
+                        "margin-left" : "5%", 
+                        "margin-right" : "3%",
+                        "text-align" : "center"
+                    }
+                ),
+
+                dcc.Graph(  #Diagrama de cajas de la variable BALANCE SIN OUTLIERS
+                    figure = go.Figure(
+                        data = [
+                            go.Box(
+                                x = df["BALANCE"],
+                                marker_color = "green",
+                                boxpoints="all"
+                            ),
+                        ],
+                        layout = go.Layout(
+                            title = "Diagrama de cajas: Variable Balance SIN OUTLIERS",
+                            xaxis_title = "Balance (saldo en la cuenta)",
+                            width = 600,
+                            height = 600,
+                        )
+                    ),
+                    style = {
+                        "display": "inline-block",
+                    }
+                ),
+            ],
+        ),
+
+        html.Div( #Tercera fila, gráfico de barras variable BALANCE y CREDIT_LIMIT 
+            children = [
+                dcc.Graph(  #Histograma de la variable BALANCE SIN OUTLIERS
+                    figure = go.Figure(
+                        data = [
+                            go.Bar(
+                                x = df["TENURE"],
+                                y = df["BALANCE"],
+                                marker_color = "red",
+                            )
+                        ],
+                        layout = go.Layout(
+                            title = "Relación variables Balance, Credit_Limit y Tenure",
+                            xaxis_title = "Tenure (meses de permanencia de la tarjeta de crédito)",
+                            yaxis_title = "Balance (saldo en la cuenta)",
+                        )
+                    ),
+                    style = {
+                        "display": "block",
+                        "margin-left": "150px",
+                        "margin-right": "150px"
+                    }
+                ),     
+            ],
+        ),
 
     ],
-    id = "primera_fila",
-    style = {
-        "margin-right": "125px",
-        "margin-left": "125px",
-        "margin-top": "100px",
-        "border-style": "groove",
+
+    style = {  #Cambiamos el estilo de la ventana principal (toda la página)
+        "margin-right": "50px",
+        "margin-left": "50px",
+        "margin-top": "50px",
+        "border-style": "double",
+        "border-width" : "5px"
     } 
 )
 
