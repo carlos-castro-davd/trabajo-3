@@ -67,6 +67,31 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
             }
         ),
 
+        #ANÁLISIS EXPLORATORIO
+
+        html.H1(  # Título Análisis Exploratorio
+            children=[
+                "ANÁLISIS EXPLORATORIO"
+            ],
+            id="titulo_análisis exploratorio",
+            style={
+                "text-align": "center",
+                "backgroundColor": "lightgrey",
+                "padding-top": "5px",
+                "padding-bottom": "2px",
+                "margin-bottom": "20px",
+                "margin-left": "30%",
+                "margin-right": "30%",
+                "margin-top": "30px",
+                "border-style": "dashed solid",
+                "border-color": "ligthgrey",
+                "border-width": "2px",
+                "height": "40px",
+                "font-family": "monospace",
+                "font-size": "25px"
+            }
+        ),
+
         html.Div(  # Primeros dos gráficos, distribución de la variable BALANCE. CON OUTLIERS
             children=[
                 dcc.Graph(  # Histograma de la variable BALANCE
@@ -159,6 +184,8 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
                     {'label': ' Purchases', 'value': 'PURCHASES'},
                     {'label': 'Advanced Cash', 'value': 'CASH_ADVANCE'},
                     {'label': 'Unique Purchases', 'value': 'ONEOFF_PURCHASES'},
+                    {'label': 'Minimum Payments', 'value': 'MINIMUM_PAYMENTS'},
+                    {'label': 'Payments', 'value': 'PAYMENTS'},
                 ],
                 value='CREDIT_LIMIT',
                 
@@ -182,28 +209,156 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
         ),
 
 
-    ],
+        # CLUSTERS (Representación y Explicación de cada uno de ellos)
 
-    style={  # Cambiamos el estilo de la ventana principal (toda la página)
-        "margin-right": "50px",
-        "margin-left": "50px",
-        "margin-top": "50px",
-        "border-style": "double",
-        "border-width": "5px"
-    }
+        html.H1(  # Título clusters
+            children=[
+                "CLUSTERS"
+            ],
+            id="titulo_clusters",
+            style={
+                "text-align": "center",
+                "backgroundColor": "lightgrey",
+                "padding-top": "5px",
+                "padding-bottom": "2px",
+                "margin-bottom": "20px",
+                "margin-left": "30%",
+                "margin-right": "30%",
+                "margin-top": "30px",
+                "border-style": "dashed solid",
+                "border-color": "ligthgrey",
+                "border-width": "2px",
+                "height": "40px",
+                "font-family": "monospace",
+                "font-size": "25px"
+            }
+        ),
+
+        html.P(  # Descripción de los clusters
+            children=[
+                "Los clientes se pueden agrupar en 4 grupos/clusters según su comportamiento: "
+            ],
+            id="clusters_párrafo",
+            style=stlyle_texto_3
+        ),
+
+        html.H2(  # Descripción de los clusters
+            children=[
+                "-Primer grupo: Grupo de clientes con poco saldo en la cuenta y muchas compras (gastones)."
+            ],
+            style=stlyle_texto_2
+        ),
+
+        html.H2(  # Descripción de los clusters
+            children=[
+                "-Segundo grupo: Grupo de clientes que tienen poco saldo en la cuenta por tanto compran poco."
+            ],
+            style=stlyle_texto_2
+        ),
+
+        html.H2(  # Descripción de los clusters
+            children=[
+                "-Tercer grupo: Grupo de clientes que tienen un balance considerado pero que compran muy poco."
+            ],
+            style=stlyle_texto_2
+        ),
+
+        html.H2(  # Descripción de los clusters
+            children=[
+                "-Cuarto grupo: Grupo de clientes con mucho saldo en la cuenta y pocas compras (ahorradores)."
+            ],
+            style=stlyle_texto_2
+        ),
+
+        # GRÁFICO CLUSTERS
+
+        html.Div(
+            children=[
+                dcc.Graph(  # Gráfico barrras varaibles BALANCE y PURCHASES para explicar diferencia entre clusters
+                    figure=grafico_barras_balance_purchases(),
+                    style={
+                        "display": "block",
+                        "margin-left":"20%",
+                        "margin-right":"10%"
+                    }
+                    ),
+
+                dcc.Graph(  # Scatterplot variables BALANCE y PURCHASES para explicar diferencia entre clusters
+                    figure=grafico_simbolos_balance_purchases(),
+                    style={
+                        "display": "block",
+                        "margin-left":"10%",
+                        "margin-right":"10%"
+                    }
+                ),
+
+                dcc.Graph(  # Gráfico de Radar para explicar diferencia entre clusters
+                    figure=radar_chart_clusters(),
+                    style={
+                        "display": "block",
+                        "margin-left":"20%",
+                        "margin-right":"10%"
+                    }
+                ),
+
+ """            dcc.Dropdown(  #Dropdown para elegir el cluster a representar en el gráfico de barras
+                    id="valores-clusters",
+                    options=[
+                        {'label': 'Cluster 0', 'value': '0'},
+                        {'label': 'Cluster 1', 'value': '1'},
+                        {'label': 'Cluster 2', 'value': '2'},
+                        {'label': 'Cluster 3', 'value': '3'},
+                    ],
+                    value='cluster',
+                    
+                    style={
+                        "margin-right": "30%",
+                        "margin-left": "10%",
+                    }
+                    ),
+                dcc.Graph(
+                    id="info-clusters",
+                    style={
+                        "display": "block",
+                        "margin-left": "150px",
+                        "margin-right": "150px"
+                    }
+        ), """
+            ]
+        )
+    ],
+        style={  # Cambiamos el estilo de la ventana principal (toda la página)
+            "margin-right": "50px",
+            "margin-left": "50px",
+            "margin-top": "50px",
+            "border-style": "double",
+            "border-width": "5px"
+    },
 )
 
 
-@app.callback(
+@app.callback(  #Callback para el dropdown de los histogramas
     Output('grafico-barras-variables', 'figure'),
     Input('valores-grafico-barras-variables', 'value')
 )
+
+@app.callback(  #Callback para el dropdown de la información de cada cluster
+    Output('info-clusters', 'figure'),
+    Input('valores-clusters', 'value')
+)
+
 def actualizar_grafico_barras(nombre_variable):
 
     print(nombre_variable)
     fig = graficos_barras_variables(nombre_variable)
 
-    return fig
+    return fig 
+
+""" def actualizar_grafico_barras_clusters(numero_cluster):
+
+    fig = info_clusters(numero_cluster)
+
+    return fig """
 
 
 if __name__ == '__main__':
