@@ -151,28 +151,25 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
         html.Div(
             
             children=[
-            dcc.Dropdown(
-            id="valores-grafico-barras-variables",
-            options=[
-                {'label': 'Credit Limit', 'value': 'CREDIT_LIMIT'},
-                {'label': 'Balance', 'value': 'BALANCE'},
-                {'label': ' Purchases', 'value': 'PURCHASES'},
-                {'label': 'Advanced Cash', 'value': 'CASH_ADVANCE'},
-                {'label': 'Unique Purchases', 'value': 'ONEOFF_PURCHASES'},
-            ],
-            value='CREDIT_LIMIT'
-            ],
-            
-            style={
-                "margin-right": "50px",
-                "margin-left": "50px",
-                "margin-top": "50px",
-                "border-style": "double",
-                "border-width": "5px"
-             }
+                dcc.Dropdown(
+                id="valores-grafico-barras-variables",
+                options=[
+                    {'label': 'Credit Limit', 'value': 'CREDIT_LIMIT'},
+                    {'label': 'Balance', 'value': 'BALANCE'},
+                    {'label': ' Purchases', 'value': 'PURCHASES'},
+                    {'label': 'Advanced Cash', 'value': 'CASH_ADVANCE'},
+                    {'label': 'Unique Purchases', 'value': 'ONEOFF_PURCHASES'},
+                ],
+                value='CREDIT_LIMIT',
+                
+                style={
+                    "margin-right": "30%",
+                    "margin-left": "10%",
+                }
         ),
+            ],
 
-        )
+        ),
 
         # Tercera fila, gráfico de barras variables
         dcc.Graph(
