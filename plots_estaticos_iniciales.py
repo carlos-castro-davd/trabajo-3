@@ -34,7 +34,7 @@ def diagrama_cajas_balance_con_outliers():
             ),
         ],
         layout=go.Layout(
-            title="Diagrama de cajas: Variable Balance",
+            title="Diagrama de cajas: Variable Balance CON OUTLIERS",
             xaxis_title="Balance (saldo en la cuenta)",
             width=600,
             height=600,
