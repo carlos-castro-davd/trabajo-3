@@ -188,13 +188,14 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
                     {'label': 'Payments', 'value': 'PAYMENTS'},
                 ],
                 value='CREDIT_LIMIT',
-                
-                style={
-                    "margin-right": "30%",
-                    "margin-left": "10%",
+                style = {
+                    "width": "750px"
                 }
         ),
             ],
+        style={
+                    "margin-left": "15%",
+                }
 
         ),
 
@@ -301,29 +302,31 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
                     }
                 ),
 
- """            dcc.Dropdown(  #Dropdown para elegir el cluster a representar en el gráfico de barras
+                dcc.Dropdown(  #Dropdown para elegir el cluster a representar en el gráfico de barras
                     id="valores-clusters",
                     options=[
-                        {'label': 'Cluster 0', 'value': '0'},
-                        {'label': 'Cluster 1', 'value': '1'},
-                        {'label': 'Cluster 2', 'value': '2'},
-                        {'label': 'Cluster 3', 'value': '3'},
+                        {'label': 'Cluster 0', 'value': 0},
+                        {'label': 'Cluster 1', 'value': 1},
+                        {'label': 'Cluster 2', 'value': 2},
+                        {'label': 'Cluster 3', 'value': 3},
                     ],
-                    value='cluster',
+                    placeholder = 'Elige uno de los clusters',
                     
                     style={
+                        "display": 'block',
                         "margin-right": "30%",
                         "margin-left": "10%",
                     }
                     ),
+                
                 dcc.Graph(
                     id="info-clusters",
                     style={
                         "display": "block",
                         "margin-left": "150px",
                         "margin-right": "150px"
-                    }
-        ), """
+                    },
+                ), 
             ]
         )
     ],
@@ -342,11 +345,6 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
     Input('valores-grafico-barras-variables', 'value')
 )
 
-@app.callback(  #Callback para el dropdown de la información de cada cluster
-    Output('info-clusters', 'figure'),
-    Input('valores-clusters', 'value')
-)
-
 def actualizar_grafico_barras(nombre_variable):
 
     print(nombre_variable)
@@ -354,12 +352,20 @@ def actualizar_grafico_barras(nombre_variable):
 
     return fig 
 
-""" def actualizar_grafico_barras_clusters(numero_cluster):
+@app.callback(  #Callback para el dropdown de la información de cada cluster
+    Output('info-clusters', 'figure'),
+    Input('valores-clusters', 'value')
+)
+def actualizar_grafico_barras_clusters(numero_cluster):
 
-    fig = info_clusters(numero_cluster)
+    if numero_cluster not in [0,1,2,3]:
+        return go.Figure(data = [], layout = {})
 
-    return fig """
+    # Dataset con solo un cluster
+    cluster = df_clusters[df_clusters["cluster"] == numero_cluster].copy()
+    fig = info_clusters(cluster)
 
+    return fig 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug = True)

@@ -71,7 +71,28 @@ def grafico_barras_balance_purchases():
 
 
 def grafico_simbolos_balance_purchases():
-    fig = px.scatter(df_clusters, x="BALANCE", y="PURCHASES", color="cluster")
+    #fig = px.scatter(df_clusters, x="BALANCE", y="PURCHASES", color="cluster")
+
+    color_cluster = {
+        0 : 'blue',
+        1 : 'purple',
+        2 : 'orange',
+        3 : 'green'    
+    }
+
+    fig = go.Figure()
+
+    for i in color_cluster.keys():
+
+        fig.add_trace(
+            go.Scatter(
+                x = df_clusters[df_clusters["cluster"] == i]["BALANCE"],
+                y = df_clusters[df_clusters["cluster"] == i]["PURCHASES"],
+                mode = "markers",
+                name = 'Cluster ' + str(i),
+                marker_color = color_cluster[i],
+            )
+        )
 
     fig.update_traces(marker=dict(size=12,
                                 line=dict(width=2,
