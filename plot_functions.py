@@ -47,4 +47,97 @@ def info_clusters(df):
     return fig 
 
 
+def radar_chart_clusters_representacion(tipo_cluster):
 
+    categories = ['Purchases Frecuency','Balance Frecuency','Unique Pruchase Frecuency',
+                'Purchases Installments Frequency', 'Cash Advance Frequency']
+
+    fig = go.Figure()
+
+    if tipo_cluster == 0:
+        fig.add_trace(go.Scatterpolar(
+            r=[0.945247, 0.977679, 0.681029, 0.728528, 0.059451], #0.945247 0.977679 0.681029 0.728528 0.059451
+            theta=categories,
+            fill='toself',
+            name='Cluster 0'
+        ))
+    elif tipo_cluster == 1:
+        fig.add_trace(go.Scatterpolar(
+            r=[0.556312, 0.841441, 0.152768, 0.422003, 0.033380], #0.556312 0.841441 0.152768 0.422003 0.033380
+            theta=categories,
+            fill='toself',
+            name='Cluster 1'
+        ))
+    elif tipo_cluster == 2:
+        fig.add_trace(go.Scatterpolar(
+            r=[0.170611, 0.940687, 0.084821, 0.093552, 0.332762], #0.170611 0.940687 0.084821 0.093552 0.332762
+            theta=categories,
+            fill='toself',
+            name='Cluster 2'
+        ))
+    elif tipo_cluster == 3:
+        fig.add_trace(go.Scatterpolar(
+            r=[0.452271, 0.993695, 0.246687, 0.347853, 0.346737], #0.452271 0.993695 0.246687 0.347853 0.346737
+            theta=categories,
+            fill='toself',
+            name='Cluster 3'
+        ))
+
+    fig.update_layout(
+    polar=dict(
+        radialaxis=dict(
+        visible=True,
+        range=[0, 1]
+        )),
+    showlegend=True
+    )
+
+    fig.update_layout(width = 900, height = 600, title = "Frecuencia del Cluster del cliente introducido",
+                    title_x=0.5, bargap = 0.2)
+
+    return fig
+
+
+
+# def radar_chart_clusters_por_usuario(tipo_cluster):
+
+#     medias = pd.DataFrame(df_clusters[df_clusters["cluster"] == tipo_cluster])[['PURCHASES_FREQUENCY',
+#                                                                                         'BALANCE_FREQUENCY',
+#                                                                                         'ONEOFF_PURCHASES_FREQUENCY',
+#                                                                                         'PURCHASES_INSTALLMENTS_FREQUENCY',
+#                                                                                         'CASH_ADVANCE_FREQUENCY']].mean().reset_index()
+#     #print(medias)
+
+#     fig = go.Figure()
+
+#     categories = ['Purchases Frequency', 'Balance Frequency','Unique Purchase Frequency',
+#                 'Purchases Installments Frequency', 'Cash Advance Frequency']
+
+#     for i in medias.unique().tolist():
+
+#         radios = medias[medias == i][['PURCHASES_FREQUENCY',
+#                                                  'BALANCE_FREQUENCY',
+#                                                  'ONEOFF_PURCHASES_FREQUENCY',
+#                                                  'PURCHASES_INSTALLMENTS_FREQUENCY',
+#                                                  'CASH_ADVANCE_FREQUENCY']].values
+
+#         fig.add_trace(go.Scatterpolar(
+#                 r = radios[0], #0.945247 0.977679 0.681029 0.728528 0.059451
+#                 theta=categories,
+#                 fill='toself',
+#                 name='Cluster {}'.format(i)
+#             ))
+
+#     fig.update_layout(
+#     polar=dict(
+#         radialaxis=dict(
+#         visible=True,
+#         range=[0, 1]
+#         )),
+#     showlegend=True
+#     )
+
+#     fig.update_layout(width = 900, height = 600, title = "Frecuencias por Cluster",
+#                     title_x=0.5, bargap = 0.2)
+
+#     return fig

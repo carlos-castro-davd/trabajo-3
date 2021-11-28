@@ -45,12 +45,24 @@ stlyle_texto_3 = {
 
 stlyle_texto_4 = {
     "display": "block",
-    "margin-left": "250px",
+    "margin-left": "400px",
     "margin-right": "150px",
     "text-align": "center",
     "text-align": "justify",
     "font-weight": "bold",
     "line-height": "150%",
     "font-family": "monospace",
-    "font-size": "20px"
+    "font-size": "30px"
+}
+
+stlyle_texto_5 = {
+    "display": "block",
+    "margin-left": "450px",
+    "margin-right": "150px",
+    "text-align": "center",
+    "text-align": "justify",
+    "font-weight": "bold",
+    "line-height": "150%",
+    "font-family": "monospace",
+    "font-size": "30px"
 }
