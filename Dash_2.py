@@ -5,8 +5,8 @@
 import numpy as np
 import plotly.graph_objects as go
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import pandas as pd
 import plotly.express as px
 from dash.dependencies import Input, Output, State
@@ -194,7 +194,7 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
         ),
             ],
         style={
-                    "margin-left": "15%",
+                    "margin-left": "20%",
                 }
 
         ),
@@ -278,21 +278,22 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
                 dcc.Graph(  # Gráfico barrras varaibles BALANCE y PURCHASES para explicar diferencia entre clusters
                     figure=grafico_barras_balance_purchases(),
                     style={
-                        "display": "block",
-                        "margin-left":"20%",
-                        "margin-right":"10%"
+                        "display": "inline-block",
+                        "margin-left": "5%"
                     }
                     ),
 
                 dcc.Graph(  # Scatterplot variables BALANCE y PURCHASES para explicar diferencia entre clusters
                     figure=grafico_simbolos_balance_purchases(),
                     style={
-                        "display": "block",
-                        "margin-left":"10%",
-                        "margin-right":"10%"
+                        "display": "inline-block"
                     }
                 ),
+            ]
+        ),
 
+        html.Div(
+            children=[
                 dcc.Graph(  # Gráfico de Radar para explicar diferencia entre clusters
                     figure=radar_chart_clusters(),
                     style={
@@ -302,6 +303,16 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
                     }
                 ),
 
+        html.P(  # Descripción de los clusters
+            children=[
+                "DESCRIPTCIÓN DE LAS VARIABLES POR CLUSTERS"
+            ],
+            style=stlyle_texto_4
+        ),
+                
+
+        html.Div(
+            children=[
                 dcc.Dropdown(  #Dropdown para elegir el cluster a representar en el gráfico de barras
                     id="valores-clusters",
                     options=[
@@ -311,24 +322,45 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
                         {'label': 'Cluster 3', 'value': 3},
                     ],
                     placeholder = 'Elige uno de los clusters',
-                    
-                    style={
-                        "display": 'block',
-                        "margin-right": "30%",
-                        "margin-left": "10%",
-                    }
                     ),
+            ],
+                style={
+                        "display": 'block',
+                        "margin-left": "20%",
+                        "width": "750px"
+                    }
+        ),
                 
                 dcc.Graph(
                     id="info-clusters",
-                    style={
-                        "display": "block",
+                    style = {
+                        "display" : "none",
                         "margin-left": "150px",
                         "margin-right": "150px"
-                    },
+                    }
                 ), 
             ]
+        ),
+
+        html.Div(
+            children=[
+                dcc.Input(  
+                    id="id_cliente",
+                    type="text",
+                    placeholder = 'ID Cliente',
+                ),
+                html.P(
+                    id="resultado_cluster",
+                ),
+                dcc.Graph(  
+                    id="radar_cliente_cluster",
+                    style = {
+                        "display" : "none"
+                    }
+                ),
+            ],
         )
+
     ],
         style={  # Cambiamos el estilo de la ventana principal (toda la página)
             "margin-right": "50px",
@@ -347,25 +379,56 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
 
 def actualizar_grafico_barras(nombre_variable):
 
-    print(nombre_variable)
     fig = graficos_barras_variables(nombre_variable)
 
     return fig 
 
 @app.callback(  #Callback para el dropdown de la información de cada cluster
     Output('info-clusters', 'figure'),
+    Output('info-clusters','style'),
     Input('valores-clusters', 'value')
 )
 def actualizar_grafico_barras_clusters(numero_cluster):
 
     if numero_cluster not in [0,1,2,3]:
-        return go.Figure(data = [], layout = {})
+        return (go.Figure(data = [], layout = {}),{"display":"none"})
 
     # Dataset con solo un cluster
     cluster = df_clusters[df_clusters["cluster"] == numero_cluster].copy()
     fig = info_clusters(cluster)
 
-    return fig 
+    return fig, {'display':'block'} 
+
+# @app.callback(     
+#     Output('resultado_cluster','children'),    
+#     Output("radar_cliente_cluster","figure"),    
+#     Output("radar_cliente_cluster","style"),    
+#     Input("id_cliente","value")
+# )
+    
+# def resultado_cluster(id_cliente):        
+#     # Que pasa si no encuentro un cliente concreto    
+#     if id_cliente not in df_clusters["CUST_ID"].values.tolist():        
+#         return [], go.Figure(data = [], layout = {}), {"display": "none"}    
+        
+#     # Primer paso coger id_cliente y mirar en los datos    
+#     client_info = df_clusters[df_clusters["CUST_ID"] == id_cliente].copy()    
+
+#     # Paso 2: Verificar cual es su cluster y escribir su descripcion    
+#     # tipo_cluster = client_info['cluster'].iloc[0]    
+#     # 
+#     desc_cluster = {
+#         0: ...,        
+#         1: ...,        
+#         2: ...,        
+#         3: ...,    }    
+    
+#     parrafo = desc_cluster[tipo_cluster]    
+    
+#     # Paso 3: Figura y estilo    
+#     return parrafo, fig, estilo
+
+
 
 if __name__ == '__main__':
     app.run_server(debug = True)

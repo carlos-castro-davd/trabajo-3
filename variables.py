@@ -42,3 +42,15 @@ stlyle_texto_3 = {
     "font-family": "monospace",
     "font-size": "14px"
 }
+
+stlyle_texto_4 = {
+    "display": "block",
+    "margin-left": "250px",
+    "margin-right": "150px",
+    "text-align": "center",
+    "text-align": "justify",
+    "font-weight": "bold",
+    "line-height": "150%",
+    "font-family": "monospace",
+    "font-size": "20px"
+}
