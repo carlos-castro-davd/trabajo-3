@@ -5,6 +5,13 @@ from plotly.subplots import *
 import numpy as np 
 
 def graficos_barras_variables(nombre_variable):
+    """
+    Parameters:
+        nombre_variable: df['nombre_variable']. Variable del dataframe que se reprentará en un barplot
+
+    Output:
+        fig. go.Figure(). Representación gráfica de la variable seleccionada en el dropdown según el límite de crédito (TENURE)
+    """
 
     fig = go.Figure(px.bar(df.groupby('TENURE').mean()[nombre_variable]))
 
@@ -25,16 +32,11 @@ def info_clusters(df):
 
     variable_names= ['Credit Limit', 'Balance', 'Purchases', 'Cash Advance', 'Minimum Payments', 'Payments']
 
-    # valores_primer_cluster = np.array([7284.607938, 1483.370003, 4070.525973, 416.412323, 781.144880, 4083.630226])
-    # valores_segundo_cluster = np.array([3272.034108, 587.491306, 599.382552, 136.452908, 445.604001, 879.249391])
-    # valores_tercer_cluster = np.array([4131.819553, 2100.521034, 243.428715, 2225.840189, 1063.410985, 1934.865207])
-    # valores_cuarto_cluster = np.array([10309.629630, 7232.476288, 1903.598919, 3840.969261, 3266.247218, 4100.758674]) 
-
     data = [
         go.Bar(
             x = variable_names,
             y = means.values,
-            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred","lightblue", "purple"]#,,"lightblue","indigo",'black'],
+            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred","lightblue", "purple"]
         )
     ]
 
@@ -48,6 +50,14 @@ def info_clusters(df):
 
 
 def radar_chart_clusters_representacion(tipo_cluster):
+
+    """
+    Parameters:
+        tipo_cluster: df['cluster']. Variable que contiene la informacion de a qué cluster pertenece el cliente
+
+    Output:
+        fig. go.Figure(). Representación gráfica del radar chart del cluster al que pertenece el cliente introducido en un input
+    """
 
     categories = ['Purchases Frecuency','Balance Frecuency','Unique Pruchase Frecuency',
                 'Purchases Installments Frequency', 'Cash Advance Frequency']

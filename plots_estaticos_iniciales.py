@@ -6,6 +6,11 @@ from plotly.subplots import *
 
 def diagrama_cajas_sin_outliers():
 
+    """
+    Output:
+        fig. go.Figure(). Representación gráfica del diagrama de cajas de los clientes que no pertenecen al cluster de los outliers
+    """
+
     fig = go.Figure(
         data=[
             go.Box(
@@ -27,6 +32,11 @@ def diagrama_cajas_sin_outliers():
 
 def diagrama_cajas_balance_con_outliers():
 
+    """
+    Output:
+        fig. go.Figure(). Representación gráfica del diagrama de cajas de los clientes que pertenecen al cluster de los outliers
+    """
+
     fig = go.Figure(
         data=[
             go.Box(
@@ -46,6 +56,11 @@ def diagrama_cajas_balance_con_outliers():
 
 
 def grafico_barras_balance_purchases():
+
+    """
+    Output:
+        fig. go.Figure(). Representación gráfica de un barplot que ilustra los valores de BALANCE y PURCHASES para cada cluster
+    """
 
     means_credit_limit = df_clusters.groupby('cluster').mean()['CREDIT_LIMIT'].values
     means_balance_limit = df_clusters.groupby('cluster').mean()['BALANCE'].values
@@ -71,7 +86,11 @@ def grafico_barras_balance_purchases():
 
 
 def grafico_simbolos_balance_purchases():
-    #fig = px.scatter(df_clusters, x="BALANCE", y="PURCHASES", color="cluster")
+    
+    """
+    Output:
+        fig. go.Figure(). Representación gráfica de un scatterplot que ilustra la distribución de los clusters según el BALANCE (eje x) y PURCHASES (eje y) 
+    """
 
     color_cluster = {
         0 : 'blue',
@@ -104,6 +123,11 @@ def grafico_simbolos_balance_purchases():
 
 
 def radar_chart_clusters():
+
+    """
+    Output:
+        fig. go.Figure(). Representación gráfica de un radar chart que ilustra para cada cluster los medias de las variables de frecuencia
+    """
 
     medias = pd.DataFrame(df_clusters.groupby("cluster")[['PURCHASES_FREQUENCY',
                                                             'BALANCE_FREQUENCY',
@@ -144,118 +168,4 @@ def radar_chart_clusters():
                     title_x=0.5, bargap = 0.2)
 
     return fig
-
-
-def subplot_clusters():
-
-    means_minimum_payments_limit = df_clusters.groupby('cluster').mean()['MINIMUM_PAYMENTS'].values
-    means_cash_advance_limit = df_clusters.groupby('cluster').mean()['CASH_ADVANCE'].values
-    means_balance_frecuency_limit = df_clusters.groupby('cluster').mean()['BALANCE_FREQUENCY'].values
-    means_credit_limit = df_clusters.groupby('cluster').mean()['CREDIT_LIMIT'].values
-    means_purchases_limit = df_clusters.groupby('cluster').mean()['PURCHASES'].values
-    means_balance_limit = df_clusters.groupby('cluster').mean()['BALANCE'].values
-    means_unique_pruchase_frecuency_limit = df_clusters.groupby('cluster').mean()['ONEOFF_PURCHASES_FREQUENCY'].values
-    means_purchases_frecuency_limit = df_clusters.groupby('cluster').mean()['PURCHASES_FREQUENCY'].values
-    means_cash_adv_limit = df_clusters.groupby('cluster').mean()['CASH_ADVANCE_FREQUENCY'].values
-
-    cluster_names = ["0","1","2","3"]
-
-    fig = make_subplots(rows = 3,
-                        cols = 2,
-                        #subplot_titles=("Distribución de las notas", "Impacto del test previo",
-                                        #"Media según la formación de los padres",
-                                        #"Media por formación y grupo étnico")
-                    )
-
-    fig.add_trace(
-        go.Bar(
-            x = cluster_names,
-            y = means_credit_limit,
-            name = "Parental level",
-            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred"]
-        ),
-        row = 1,
-        col = 1
-    )
-
-
-    # Segundo gráfico
-    fig.add_trace(
-        go.Bar(
-            x = cluster_names,
-            y = means_balance_limit,
-            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred"]
-        ),
-        row = 1,
-        col = 2
-    )
-
-    # Tercer gráfico
-    fig.add_trace(
-        go.Bar(
-            x = cluster_names,
-            y = means_purchases_limit,
-            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred"]
-        ),
-        row = 2,
-        col = 1
-    )
-
-    # Cuarto gráfico
-    fig.add_trace(
-        go.Bar(
-            x = cluster_names,
-            y = means_cash_advance_limit,
-            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred"]
-        ),
-        row = 2,
-        col = 2
-    )
-
-    # Quinto gráfico
-    fig.add_trace(
-        go.Bar(
-            x = cluster_names,
-            y = means_minimum_payments_limit,
-            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred"]
-        ),
-        row = 3,
-        col = 1
-    )
-
-    # Sexto gráfico
-    fig.add_trace(
-        go.Bar(
-            x = cluster_names,
-            y = means_purchases_frecuency_limit,
-            marker_color = ["cornflowerblue","sandybrown","mediumseagreen", "indianred"]
-        ),
-        row = 3,
-        col = 2
-    )
-
-    # Modifico las dimensiones totales y el titulo global
-    fig.update_layout(width = 1000, height = 900, title = "Información de los Clusters",
-                    title_x=0.5, bargap = 0.2, showlegend=False)
-
-    fig.update_xaxes(title_text = "Clusters", row = 1, col = 1)
-    fig.update_yaxes(title_text = "Credit Limit", row = 1, col = 1)
-
-    fig.update_xaxes(title_text = "Clusters", row = 1, col = 2)
-    fig.update_yaxes(title_text = "Balance", row = 1, col = 2)
-
-    fig.update_xaxes(title_text = "Clusters", row = 2, col = 1)
-    fig.update_yaxes(title_text = "Purchases", row = 2, col = 1)
-
-    fig.update_xaxes(title_text = "Clusters", row = 2, col = 2)
-    fig.update_yaxes(title_text = "Cash Advance", row = 2, col = 2)
-
-    fig.update_xaxes(title_text = "Clusters", row = 3, col = 1)
-    fig.update_yaxes(title_text = "Minimum Payments", row = 3, col = 1)
-
-    fig.update_xaxes(title_text = "Clusters", row = 3, col = 2)
-    fig.update_yaxes(title_text = "Purchases Frecuency", row = 3, col = 2)
-
-    return fig
-
 

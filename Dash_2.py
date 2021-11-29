@@ -176,7 +176,7 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
         html.Div(
             
             children=[
-                dcc.Dropdown(
+                dcc.Dropdown(   # Dropdown con los valores de las variables para el gráfico de barras posterior
                 id="valores-grafico-barras-variables",
                 options=[
                     {'label': 'Credit Limit', 'value': 'CREDIT_LIMIT'},
@@ -235,7 +235,7 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
             }
         ),
 
-        html.P(  # Descripción de los clusters
+        html.P(  # Descripción de los clusters 
             children=[
                 "Los clientes se pueden agrupar en 4 grupos/clusters según su comportamiento: "
             ],
@@ -243,28 +243,28 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
             style=stlyle_texto_3
         ),
 
-        html.H2(  # Descripción de los clusters
+        html.H2(  # Descripción de los clusters (Cluster 0)
             children=[
                 "-Cluster 0: Grupo de clientes con poco saldo en la cuenta y muchas compras (gastones)."
             ],
             style=stlyle_texto_2
         ),
 
-        html.H2(  # Descripción de los clusters
+        html.H2(  # Descripción de los clusters (Cluster 1)
             children=[
                 "-Cluster 1: Grupo de clientes que tienen poco saldo en la cuenta por tanto compran poco."
             ],
             style=stlyle_texto_2
         ),
 
-        html.H2(  # Descripción de los clusters
+        html.H2(  # Descripción de los clusters (Cluster 2)
             children=[
                 "-Cluster 2: Grupo de clientes que tienen un balance considerado pero que compran muy poco."
             ],
             style=stlyle_texto_2
         ),
 
-        html.H2(  # Descripción de los clusters
+        html.H2(  # Descripción de los clusters (Cluster 3)
             children=[
                 "-Cluster 3: Grupo de clientes con mucho saldo en la cuenta y pocas compras (ahorradores)."
             ],
@@ -273,7 +273,7 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
 
         # GRÁFICO CLUSTERS
 
-        html.Div(
+        html.Div(   # Gráficos de barras para explicar la diferencia entre los 4 clusters en términos de BALANCE y PURCHASES
             children=[
                 dcc.Graph(  # Gráfico barrras varaibles BALANCE y PURCHASES para explicar diferencia entre clusters
                     figure=grafico_barras_balance_purchases(),
@@ -292,9 +292,9 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
             ]
         ),
 
-        html.Div(
+        html.Div( # Gráfico de Radar para explicar diferencia entre clusters
             children=[
-                dcc.Graph(  # Gráfico de Radar para explicar diferencia entre clusters
+                dcc.Graph(  
                     figure=radar_chart_clusters(),
                     style={
                         "display": "block",
@@ -311,9 +311,9 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
         ),
                 
 
-        html.Div(
+        html.Div( # Dropdown para elegir el cluster a representar en el gráfico de barras y gráfico con la información del cluster
             children=[
-                dcc.Dropdown(  #Dropdown para elegir el cluster a representar en el gráfico de barras
+                dcc.Dropdown(  # Dropdown que permite la selección del cluster
                     id="valores-clusters",
                     options=[
                         {'label': 'Cluster 0', 'value': 0},
@@ -331,7 +331,7 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
                     }
         ),
                 
-                dcc.Graph(
+                dcc.Graph( #Gráfico con la información del cluster
                     id="info-clusters",
                     style = {
                         "display" : "none",
@@ -349,7 +349,7 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
             style=stlyle_texto_5
         ),
 
-        html.Div(
+        html.Div( # Input para que el usuario introduzca por el Dash el usuario del que desea ver el cluster
             children=[
                 dcc.Input(  
                     id="id_cliente",
@@ -373,7 +373,7 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
         #             }
         # ),
 
-        html.Div(
+        html.Div(   # Gráfico de radar para visualizar el cluster del cliente introducido por pantalla
             children=[
                 dcc.Graph(
                     id="radar_cliente_cluster",
@@ -395,23 +395,23 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
     },
 )
 
-@app.callback(  #Callback para el dropdown de los histogramas
+@app.callback(  # Callback para el dropdown de los gráficos de barras de las variables
     Output('grafico-barras-variables', 'figure'),
     Input('valores-grafico-barras-variables', 'value')
 )
 
-def actualizar_grafico_barras(nombre_variable):
+def actualizar_grafico_barras(nombre_variable): # Función que actualiza el gráfico de barras en función de las variables
 
     fig = graficos_barras_variables(nombre_variable)
 
     return fig 
 
-@app.callback(  #Callback para el dropdown de la información de cada cluster
+@app.callback(  # Callback para el dropdown de la información de cada cluster
     Output('info-clusters', 'figure'),
     Output('info-clusters','style'),
     Input('valores-clusters', 'value')
 )
-def actualizar_grafico_barras_clusters(numero_cluster):
+def actualizar_grafico_barras_clusters(numero_cluster): # Función que actualiza el gráfico de barrras con las variables en función del número de cluster
 
     if numero_cluster not in [0,1,2,3]:
         return (go.Figure(data = [], layout = {}),{"display":"none"})
@@ -422,21 +422,21 @@ def actualizar_grafico_barras_clusters(numero_cluster):
 
     return fig, {'display':'block'}
 
-@app.callback( 
+@app.callback(  # Callback que representa el gráfico de radar para visualizar el cluster del cliente introducido
     #Output('resultado_cluster','children'),    
     Output('radar_cliente_cluster', 'figure'),
     Output('radar_cliente_cluster','style'),
     Input('id_cliente', 'value')
 )
 
-def resultado_cluster_function(id_cliente):
+def resultado_cluster_function(id_cliente): # Función que actualiza el radar chart del cluster en funcion del cliente introducido
 
     # Qué pasa si no encuentro un cliente concreto 
     if id_cliente not in df_clusters["CUST_ID"].values.tolist():
          return (go.Figure(data = [], layout = {}),{"display":"none"}) 
     
 
-    # Primer paso coger id_cliente y mirar en los datos 
+    # Paso 1: Coger id_cliente y mirar en los datos 
     client_info = df_clusters[df_clusters["CUST_ID"] == id_cliente].copy()
 
     # Paso 2: Verificar cual es su cluster y escribir su descripcion  
@@ -486,4 +486,4 @@ def resultado_cluster_function(id_cliente):
 
 
 if __name__ == '__main__':
-    app.run_server(debug = True)
+    app.run_server(debug = True) 
