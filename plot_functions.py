@@ -41,7 +41,7 @@ def info_clusters(df):
     ]
 
     layout = go.Layout(title = "DISTRIBUCIÓN DE VARIABLES PARA EL CLUSTER {}".format(cluster), xaxis_title = "VARIABLES",
-                    yaxis_title = f"CLUSTER {cluster}", title_x=0.5)
+                    yaxis_title = f"Media del Cluster {cluster} para cada variable", title_x=0.5)
 
     fig = go.Figure(data = data, layout = layout)
     fig.update_yaxes(range=[0,10000])
@@ -107,47 +107,3 @@ def radar_chart_clusters_representacion(tipo_cluster):
 
     return fig
 
-
-
-# def radar_chart_clusters_por_usuario(tipo_cluster):
-
-#     medias = pd.DataFrame(df_clusters[df_clusters["cluster"] == tipo_cluster])[['PURCHASES_FREQUENCY',
-#                                                                                         'BALANCE_FREQUENCY',
-#                                                                                         'ONEOFF_PURCHASES_FREQUENCY',
-#                                                                                         'PURCHASES_INSTALLMENTS_FREQUENCY',
-#                                                                                         'CASH_ADVANCE_FREQUENCY']].mean().reset_index()
-#     #print(medias)
-
-#     fig = go.Figure()
-
-#     categories = ['Purchases Frequency', 'Balance Frequency','Unique Purchase Frequency',
-#                 'Purchases Installments Frequency', 'Cash Advance Frequency']
-
-#     for i in medias.unique().tolist():
-
-#         radios = medias[medias == i][['PURCHASES_FREQUENCY',
-#                                                  'BALANCE_FREQUENCY',
-#                                                  'ONEOFF_PURCHASES_FREQUENCY',
-#                                                  'PURCHASES_INSTALLMENTS_FREQUENCY',
-#                                                  'CASH_ADVANCE_FREQUENCY']].values
-
-#         fig.add_trace(go.Scatterpolar(
-#                 r = radios[0], #0.945247 0.977679 0.681029 0.728528 0.059451
-#                 theta=categories,
-#                 fill='toself',
-#                 name='Cluster {}'.format(i)
-#             ))
-
-#     fig.update_layout(
-#     polar=dict(
-#         radialaxis=dict(
-#         visible=True,
-#         range=[0, 1]
-#         )),
-#     showlegend=True
-#     )
-
-#     fig.update_layout(width = 900, height = 600, title = "Frecuencias por Cluster",
-#                     title_x=0.5, bargap = 0.2)
-
-#     return fig

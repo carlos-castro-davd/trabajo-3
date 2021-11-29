@@ -399,7 +399,6 @@ app.layout = html.Div(  # Primer Div que contendrá toda la página
     Output('grafico-barras-variables', 'figure'),
     Input('valores-grafico-barras-variables', 'value')
 )
-
 def actualizar_grafico_barras(nombre_variable): # Función que actualiza el gráfico de barras en función de las variables
 
     fig = graficos_barras_variables(nombre_variable)
@@ -428,7 +427,6 @@ def actualizar_grafico_barras_clusters(numero_cluster): # Función que actualiza
     Output('radar_cliente_cluster','style'),
     Input('id_cliente', 'value')
 )
-
 def resultado_cluster_function(id_cliente): # Función que actualiza el radar chart del cluster en funcion del cliente introducido
 
     # Qué pasa si no encuentro un cliente concreto 
@@ -446,43 +444,6 @@ def resultado_cluster_function(id_cliente): # Función que actualiza el radar ch
     fig = radar_chart_clusters_representacion(tipo_cluster) 
 
     return fig, {"display":"block", "margin-left":"20%", "margin-bottom": "30px"} 
-
-
-
-# @app.callback( 
-#     #Output('resultado_cluster','children'),    
-#     Output('radar_cliente_cluster', 'figure'),
-#     Output('radar_cliente_cluster','style'),
-#     Input('id_cliente', 'value')
-# )
-
-# def resultado_cluster_function(id_cliente):
-
-#     # Qué pasa si no encuentro un cliente concreto 
-
-#     if id_cliente not in df_clusters["CUST_ID"].values.tolist():
-#          return ([], go.Figure(data = [], layout = {}),{"display":"none"}) 
-    
-
-#     # Primer paso coger id_cliente y mirar en los datos 
-#     client_info = df_clusters[df_clusters["CUST_ID"] == id_cliente].copy()
-
-#     # Paso 2: Verificar cual es su cluster y escribir su descripcion  
-#     tipo_cluster = client_info['cluster'].iloc[0]
-
-#     desc_cluster = {
-#         '0': "Cluster 0: Grupo de clientes con poco saldo en la cuenta y muchas compras (gastones)",
-#         '1': "Cluster 1: Grupo de clientes que tienen poco saldo en la cuenta por tanto compran poco" ,
-#         '2': "Cluster 2: Grupo de clientes que tienen un balance considerado pero que compran muy poco" ,
-#         '3': "Cluster 3: Grupo de clientes con mucho saldo en la cuenta y pocas compras (ahorradores)" 
-#     }
-
-#     parrafo = desc_cluster[tipo_cluster]
-
-#     # Paso 3: Figura y estilo 
-#     fig = radar_chart_clusters_por_usuario(tipo_cluster) 
-
-#     return parrafo,fig, {"display":"block"} 
 
 
 if __name__ == '__main__':
